@@ -67,7 +67,7 @@ void PPU::drawLine() {
     u8 oamLine;
     u32 screenOfs = SCREEN_W_EXT * scanLine;
     u32 pixel;
-    for( int i=0; i<NUM_SPRITES; i++ ) {
+    for( int i=NUM_SPRITES-1; i>=0; i-- ) {
         oam[i].updateAttributes();
         if(oam[i].intersectsScanline( scanLine, oamLine ) && oam[i].y < 0xef) {
             oam[i].updatePixels( oamLine );
@@ -75,10 +75,14 @@ void PPU::drawLine() {
             for(int j=0; j<OAM::w; j++) {
                 if( oam[i].line[j] != 0xffffff ) {
                     pixel = palColors[ tmpBgPal[ 0 ] ];
-                    if( ( oam[i].number == 0 ) && ( screen[ oam[i].x + j + screenOfs ] != pixel ) ) //check for hit flag
+                    
+                    //check for hit flag 
+                    if( ( oam[i].number == 0 ) && ( screen[ oam[i].x + j + screenOfs ] != pixel ) )
                         mmu->cpuMem[ REG_PPU_STAT ] |= 0x40;
 
-                    screen[ oam[i].x + j + screenOfs ] = oam[i].line[j];
+                    //check for sprite priority and draw
+                    if( !( oam[i].priority && ( screen[ oam[i].x + j + screenOfs ] != pixel ) ) )
+                        screen[ oam[i].x + j + screenOfs ] = oam[i].line[j];
                 }
             }
         }

@@ -40,25 +40,31 @@ Emulator::Emulator( const char* path, u32* screen ) {
     ppu = new PPU( cpu, this->screen, mmu );
     mmu->setCPU(cpu);
 
+    debugger = new Debugger( cpu, mmu );
+    setbuf( stdout, NULL );
 }
 
 Emulator::~Emulator() {
+    delete input;
     delete rom;
     delete cpu;
     delete mmu;
     delete ppu;
+    delete debugger;
 }
 
 void Emulator::run() {
     while(!ppu->update()) {
         cpu->execInstr( mmu->memRead8( cpu->PC ) );
-
-        //printf("PC: %x \n",cpu->PC);
-
+        debugger->getCommand();
     }
 
 }
 
 void Emulator::setKey( u8 key, u8 event ) {
     input->setButtonState( key, event );
+}
+
+void Emulator::activateDebugger() {
+    debugger->activateDebugger();
 }

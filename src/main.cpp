@@ -156,7 +156,7 @@ void keyPressed( unsigned char key, int x, int y ) {
             emu->setKey(BTN_START,BTN_PRESSED);
             break;
         case 'q': //activate debugger
-            //emu->activateDebugger();
+            emu->activateDebugger();
             break;
     } 
 }

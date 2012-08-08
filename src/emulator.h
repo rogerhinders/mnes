@@ -26,6 +26,7 @@
 #include "mmu.h"
 #include "ppu.h"
 #include "input.h"
+#include "debugger.h"
 
 class Emulator {
 
@@ -34,6 +35,7 @@ public:
     ~Emulator();
     void run();
     void setKey(u8 key,u8 event);
+    void activateDebugger();
 
 private:
     u32* screen;
@@ -42,6 +44,7 @@ private:
     MMU* mmu;
     PPU* ppu;
     Input* input;
+    Debugger* debugger;
 };
 
 #endif // EMULATOR_H
