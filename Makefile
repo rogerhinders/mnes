@@ -8,7 +8,8 @@ FILES = src/cart.cpp \
         src/mmu.cpp \
         src/cpu.cpp \
         src/header.cpp \
-        src/ppu.cpp
+        src/ppu.cpp \
+        src/debugger.cpp
 
 LIBS = -lglut -lGL -lGLU
 FLAGS = -Wall
